@@ -1,0 +1,63 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | UET Bank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>UET Bank</h1>
+            <a href="{{ url_for('create_customer') }}" class="btn">+ New Account</a>
+        </header>
+
+        <!-- Search Bar -->
+        <div style="margin-bottom: 2rem;">
+            <form action="{{ url_for('index') }}" method="GET" style="display: flex; gap: 10px;">
+                <input type="text" name="search" value="{{ search_query }}" 
+                       placeholder="Search by Name or Account Number..." 
+                       style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; padding: 12px; border-radius: 12px; outline: none;">
+                <button type="submit" class="btn">Search</button>
+                {% if search_query %}
+                    <a href="{{ url_for('index') }}" class="btn" style="background: rgba(255,255,255,0.1); text-decoration: none;">Clear</a>
+                {% endif %}
+            </form>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+            {% for account in accounts %}
+                <div class="card">
+                    <h2 style="margin:0;">{{ account.account_holder }}</h2>
+                    <small style="color: #94a3b8;">Type: {{ account.acc_type|capitalize }} | No: {{ account.account_number }}</small>
+                    <hr style="border: 0.5px solid var(--glass-border); margin: 1rem 0;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <p style="margin:0; font-size: 1.5rem; color: #818cf8;">{{ account.balance }} Rs.</p>
+                        </div>
+                        <div class="actions">
+                            <a href="{{ url_for('deposit', acc_num=account.account_number) }}" class="btn" style="padding: 8px 12px; font-size: 0.8rem;">Deposit</a>
+                            <a href="{{ url_for('withdraw', acc_num=account.account_number) }}" class="btn" style="padding: 8px 12px; font-size: 0.8rem; background: rgba(255,255,255,0.1);">Withdraw</a>
+                            <a href="{{ url_for('transactions', acc_num=account.account_number) }}" style="color: white; margin-left: 10px; text-decoration: none;">History</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p style="text-align: center; grid-column: 1 / -1; color: #94a3b8;">No accounts found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+    

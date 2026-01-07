@@ -1,0 +1,58 @@
+<!-- templates/transactions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statement | {{ bank_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header style="margin-bottom: 2.5rem;">
+            <h1 style="margin-bottom: 0.5rem;">Account Statement</h1>
+            <p style="color: #94a3b8;">Reviewing activity for: <strong>{{ account.account_number }}</strong></p>
+        </header>
+
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DATE & TIME</th>
+                        <th>TRANSACTION TYPE</th>
+                        <th>AMOUNT</th>
+                        <th>FINAL BALANCE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in account.transactions|reverse %}
+                    <tr>
+                        <td style="color: #cbd5e1;">{{ tx.date }}</td>
+                        <td>
+                            <span style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem;">
+                                {{ tx.type }}
+                            </span>
+                        </td>
+                        <td style="font-weight: 600; 
+                            {% if tx.amount < 0 %} color: #f87171; {% else %} color: #4ade80; {% endif %}">
+                            {% if tx.amount < 0 %} - {% else %} + {% endif %} {{ tx.amount|abs }}Rs.
+                        </td>
+                        <td style="font-weight: 600;">{{ tx.balance_after }} Rs.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if not account.transactions %}
+            <div style="text-align: center; padding: 3rem; color: #94a3b8;">
+                <p>No transactions found for this account.</p>
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
+            <a href="{{ url_for('index') }}" class="btn" style="background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border);">← Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

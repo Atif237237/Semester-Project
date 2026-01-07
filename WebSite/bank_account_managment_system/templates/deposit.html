@@ -1,0 +1,42 @@
+<!-- templates/deposit.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit | {{ bank_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container" style="max-width: 450px;">
+        <h1 style="text-align: center; margin-bottom: 0.5rem;">Deposit Funds</h1>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 2rem;">Securely add money to your account</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="card" style="text-align: center; padding: 2rem;">
+            <p style="color: #94a3b8; margin-bottom: 0.5rem;">Current Balance</p>
+            <h2 style="font-size: 2.5rem; color: #22c55e; margin-top: 0;">{{ account.get_balance() }} Rs.</h2>
+            
+            <form method="POST" style="margin-top: 2rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; text-align: left; margin-bottom: 0.5rem; color: #94a3b8;">Amount to Deposit</label>
+                    <input type="number" step="0.01" name="amount" placeholder="Enter amount in Rs."
+                           style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 12px; width: 100%; font-size: 1.2rem; box-sizing: border-box;" required autofocus>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem; padding: 15px;">Confirm Deposit</button>
+            </form>
+        </div>
+        
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <a href="{{ url_for('index') }}" style="color: #94a3b8; text-decoration: none; font-weight: 500;">← Cancel and Go Back</a>
+        </div>
+    </div>
+</body>
+</html>

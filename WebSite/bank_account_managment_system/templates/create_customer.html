@@ -1,0 +1,71 @@
+<!-- templates/create_customer.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | {{ bank_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.9rem; }
+        input, select {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input:focus, select:focus { border-color: var(--primary); }
+        option { background: #1e1b4b; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 500px;">
+        <h1 style="text-align: center; margin-bottom: 0.5rem;">Create Account</h1>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 2rem;">Join the future of digital banking</p>
+
+        <div class="card">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="e.g. Shahroz Aslam" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Customer ID</label>
+                    <input type="text" name="cust_id" placeholder="e.g. C-101" required>
+                </div>
+
+                <div class="form-group">
+                    <label>New Account Number</label>
+                    <input type="text" name="acc_num" placeholder="e.g. PK-786" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <select name="acc_type">
+                        <option value="savings">Savings Account (2.0% Interest)</option>
+                        <option value="current">Current Account (Standard)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Initial Deposit ($)</label>
+                    <input type="number" step="0.01" name="balance" placeholder="0.00" required>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 1rem; padding: 15px;">Open Account Now</button>
+            </form>
+        </div>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <a href="{{ url_for('index') }}" style="color: #94a3b8; text-decoration: none;">← Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
